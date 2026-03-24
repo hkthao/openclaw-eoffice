@@ -1,0 +1,22 @@
+services:
+  agent:
+    build: .
+    container_name: openclaw-eoffice-agent
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - /app/.venv # Tránh ghi đè venv khi mount volume trong dev
+    restart: unless-stopped
+    # Nếu agent có giao diện UI hoặc API, hãy mở port ở đây
+    # ports:
+    #   - "8000:8000"
+
+  # Tùy chọn: Chạy Ollama local nếu không dùng API cloud
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: ollama-local
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ./data/ollama:/root/.ollama
