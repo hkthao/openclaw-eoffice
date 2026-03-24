@@ -1,22 +1,26 @@
 services:
-  agent:
-    build: .
-    container_name: openclaw-eoffice-agent
-    env_file:
-      - .env
-    volumes:
-      - .:/app
-      - /app/.venv
-      - ./tmp/inputs:/app/tmp/inputs
-      - ./tmp/outputs:/app/tmp/outputs
+  openclaw-gateway:
+    image: ghcr.io/openclaw/openclaw:latest
+    container_name: openclaw-gateway
     restart: unless-stopped
-    shm_size: '2gb' # Tránh crash trình duyệt khi rendering
     ports:
-      - "6080:6080" # noVNC Port để xem visual debug qua browser
-      - "5900:5900" # VNC Port (truy cập bằng VNC client truyền thống)
+      - "18789:18789" # Gateway UI & API
+      - "18791:18791" # Browser control (optional)
+    volumes:
+      # Mount the entire workspace into the container
+      - ./workspace:/home/node/openclaw/workspace
+    environment:
+      - NODE_ENV=production
+      # Point OpenClaw to the config inside the workspace
+      - OPENCLAW_HOME=/home/node/openclaw/workspace
+      # Ollama config
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - OLLAMA_API_KEY=ollama-local
+      - DEFAULT_MODEL=ollama/qwen3:8b
     extra_hosts:
-      - "host.docker.internal:host-gateway" # Truy cập Ollama chạy ở máy host
-
-networks:
-  default:
-    name: openclaw-eoffice-net
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:18789/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

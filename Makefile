@@ -1,52 +1,48 @@
-.PHONY: setup run test lint format dev stop logs clean help
+# Makefile cho openclaw-eoffice
 
-# Mặc định khi chỉ gõ 'make'
-help:
-	@echo "Các lệnh hỗ trợ:"
-	@echo "  make setup    - Cài đặt môi trường và các dependencies (uv)"
-	@echo "  make run      - Chạy Agent local"
-	@echo "  make test     - Chạy unit tests"
-	@echo "  make lint     - Kiểm tra lỗi code (ruff)"
-	@echo "  make format   - Tự động format code (ruff)"
-	@echo "  make dev      - Khởi động dự án bằng Docker Compose"
-	@echo "  make stop     - Dừng tất cả containers"
-	@echo "  make logs     - Xem log của Agent trong Docker"
-	@echo "  make clean    - Xóa các file rác, cache"
+.PHONY: up down restart logs ps cli token clean help
 
-# Cài đặt môi trường
-setup:
-	uv sync
-	uv run playwright install chromium
+# Khởi chạy OpenClaw Gateway ở chế độ background
+up:
+	docker compose up -d
 
-# Chạy ứng dụng local
-run:
-	uv run main.py
-
-# Kiểm thử
-test:
-	uv run pytest
-
-# Kiểm tra code style
-lint:
-	uv run ruff check .
-
-# Định dạng code
-format:
-	uv run ruff format .
-
-# Docker commands
-dev:
-	docker compose up -d --build
-
-stop:
+# Dừng tất cả các dịch vụ
+down:
 	docker compose down
 
-logs:
-	docker compose logs -f agent
+# Khởi động lại các dịch vụ
+restart:
+	docker compose restart
 
-# Dọn dẹp cache
+# Xem log của OpenClaw Gateway
+logs:
+	docker compose logs -f openclaw-gateway
+
+# Kiểm tra trạng thái các container
+ps:
+	docker compose ps
+
+# Chạy OpenClaw CLI (Sử dụng: make cli CMD="dashboard --no-open")
+cli:
+	docker compose run --rm openclaw-cli $(CMD)
+
+# Lấy token truy cập Dashboard
+token:
+	docker compose run --rm openclaw-cli dashboard --no-open
+
+# Dọn dẹp workspace (Cẩn thận: xóa toàn bộ dữ liệu trong workspace)
 clean:
-	find . -type d -name "__pycache__" -exec rm -rf {} +
-	find . -type d -name ".pytest_cache" -exec rm -rf {} +
-	find . -type d -name ".ruff_cache" -exec rm -rf {} +
-	find . -type d -name ".mypy_cache" -exec rm -rf {} +
+	rm -rf workspace/*
+	touch workspace/.gitkeep
+
+# Hướng dẫn sử dụng
+help:
+	@echo "Các lệnh hỗ trợ:"
+	@echo "  make up      - Khởi chạy OpenClaw Gateway"
+	@echo "  make down    - Dừng các dịch vụ"
+	@echo "  make restart - Khởi động lại các dịch vụ"
+	@echo "  make logs    - Xem log của Gateway"
+	@echo "  make ps      - Kiểm tra trạng thái container"
+	@echo "  make token   - Lấy token truy cập Dashboard"
+	@echo "  make cli CMD='...' - Chạy lệnh CLI tùy chỉnh"
+	@echo "  make clean   - Xóa dữ liệu trong thư mục workspace"
