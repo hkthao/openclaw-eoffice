@@ -1,0 +1,33 @@
+[project]
+name = "openclaw-eoffice"
+version = "0.1.0"
+description = "AI Agent tự động hóa tác vụ eOffice sử dụng OpenClaw"
+authors = [
+    { name = "Developer", email = "dev@example.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "openclaw>=0.1.0",
+    "playwright>=1.42.0",
+    "pydantic>=2.6.0",
+    "python-dotenv>=1.0.1",
+    "loguru>=0.7.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.3.0",
+    "mypy>=1.8.0",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "C4"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
