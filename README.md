@@ -68,6 +68,24 @@ Chạy kiểm thử:
 uv run pytest
 ```
 
+## 🖥 Visual Debugging
+
+Agent chạy trong môi trường có giao diện ảo (Xvfb + VNC). Bạn có thể xem trực tiếp các thao tác của Agent trên trình duyệt web:
+
+- **noVNC URL:** [http://localhost:6080](http://localhost:6080)
+- **VNC Client:** `localhost:5900` (Không cần mật khẩu)
+
+## 🐳 Docker Deployment
+
+Để chạy toàn bộ hệ thống bằng Docker:
+
+```bash
+make dev
+```
+
+Hệ thống được cấu hình để kết nối với **Ollama** đang chạy trên máy host tại:
+`host.docker.internal:11434`
+
 ## 🤝 Đóng góp
 
 Vui lòng đọc kỹ file [GEMINI.md](./GEMINI.md) để hiểu về quy trình phát triển, quy tắc commit và workflow của dự án trước khi thực hiện bất kỳ thay đổi nào.
