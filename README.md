@@ -35,6 +35,11 @@ cp .env.example .env
 ```
 
 ### 3. Khởi chạy với Docker
+Trước khi khởi chạy, hãy đảm bảo thư mục `workspace` có quyền truy cập đúng trên macOS:
+```bash
+chmod -R 777 workspace
+```
+
 Khởi chạy OpenClaw Gateway:
 ```bash
 docker compose up -d

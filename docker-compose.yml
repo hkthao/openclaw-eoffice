@@ -7,22 +7,22 @@ services:
       - "18789:18789" # Gateway UI & API
     volumes:
       - ~/.openclaw:/home/node/.openclaw # Cấu hình agent
-      - ./workspace:/home/node/openclaw/workspace # Không gian làm việc cho file
+      - ./workspace:/home/node/openclaw/workspace # Không gian làm việc
     env_file:
       - .env
     extra_hosts:
-      - "host.docker.internal:host-gateway" # Truy cập LLM (Ollama) chạy ở máy host
+      - "host.docker.internal:host-gateway" # Truy cập Ollama chạy ở máy host macOS
 
   openclaw-cli:
     image: ghcr.io/openclaw/openclaw:latest
     container_name: openclaw-cli
-    profiles: ["cli"] # Chỉ chạy khi cần thiết
+    profiles: ["cli"]
     volumes:
       - ~/.openclaw:/home/node/.openclaw
       - ./workspace:/home/node/openclaw/workspace
     env_file:
       - .env
-    entrypoint: ["node", "index.js"] # Cho phép chạy lệnh CLI
+    entrypoint: ["node", "dist/index.js"]
 
 networks:
   default:
