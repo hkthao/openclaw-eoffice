@@ -5,25 +5,22 @@ services:
     restart: unless-stopped
     ports:
       - "18789:18789" # Gateway UI & API
+      - "18791:18791" # Browser control (optional)
     volumes:
-      - ~/.openclaw:/home/node/.openclaw # Cấu hình agent
-      - ./workspace:/home/node/openclaw/workspace # Không gian làm việc
-    env_file:
-      - .env
-    extra_hosts:
-      - "host.docker.internal:host-gateway" # Truy cập Ollama chạy ở máy host macOS
-
-  openclaw-cli:
-    image: ghcr.io/openclaw/openclaw:latest
-    container_name: openclaw-cli
-    profiles: ["cli"]
-    volumes:
-      - ~/.openclaw:/home/node/.openclaw
+      # Mount the entire workspace into the container
       - ./workspace:/home/node/openclaw/workspace
-    env_file:
-      - .env
-    entrypoint: ["node", "dist/index.js"]
-
-networks:
-  default:
-    name: openclaw-eoffice-net
+    environment:
+      - NODE_ENV=production
+      # Point OpenClaw to the config inside the workspace
+      - OPENCLAW_HOME=/home/node/openclaw/workspace
+      # Ollama config
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - OLLAMA_API_KEY=ollama-local
+      - DEFAULT_MODEL=ollama/qwen3:8b
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:18789/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

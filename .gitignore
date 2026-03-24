@@ -99,3 +99,6 @@ data/
 outputs/
 recordings/
 trace.zip
+
+# Gemini CLI specific workspace files
+workspace/.openclaw/
