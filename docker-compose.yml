@@ -6,17 +6,17 @@ services:
       - .env
     volumes:
       - .:/app
-      - /app/.venv # Tránh ghi đè venv khi mount volume trong dev
+      - /app/.venv
+      - ./tmp/inputs:/app/tmp/inputs
+      - ./tmp/outputs:/app/tmp/outputs
     restart: unless-stopped
-    # Nếu agent có giao diện UI hoặc API, hãy mở port ở đây
-    # ports:
-    #   - "8000:8000"
+    shm_size: '2gb' # Tránh crash trình duyệt khi rendering
+    ports:
+      - "6080:6080" # noVNC Port để xem visual debug qua browser
+      - "5900:5900" # VNC Port (truy cập bằng VNC client truyền thống)
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Truy cập Ollama chạy ở máy host
 
-  # Tùy chọn: Chạy Ollama local nếu không dùng API cloud
-  # ollama:
-  #   image: ollama/ollama:latest
-  #   container_name: ollama-local
-  #   ports:
-  #     - "11434:11434"
-  #   volumes:
-  #     - ./data/ollama:/root/.ollama
+networks:
+  default:
+    name: openclaw-eoffice-net
