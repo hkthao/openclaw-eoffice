@@ -1,0 +1,101 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Cấu hình môi trường (QUAN TRỌNG: Không bao giờ commit .env)
+.env
+.env.local
+.env.*.local
+.python-version
+.direnv/
+.envrc
+.pdm-python
+
+# Môi trường ảo (Virtual Environments)
+.venv/
+venv/
+env/
+ENV/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+pip-wheel-metadata/
+
+# UV & Package Managers
+.uv/
+.python-install/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.local-browsers
+.auth/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+.project
+.pydevproject
+.settings/
+
+# Hệ điều hành
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs và Dữ liệu tạm
+*.log
+logs/
+tmp/
+temp/
+*.pid
+*.seed
+*.pid.lock
+
+# Python build/dist
+build/
+dist/
+*.egg-info/
+*.egg
+nosetests.xml
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Pytest & Testing
+.pytest_cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.noseids
+
+# Mypy/Ruff/Type checking cache
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+.pdm-build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# OpenClaw / LLM specific (Dữ liệu cache, embeddings, v.v.)
+.cache/
+data/
+outputs/
+recordings/
+trace.zip
